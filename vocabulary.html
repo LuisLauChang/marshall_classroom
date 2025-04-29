@@ -51,11 +51,6 @@
 </head>
 <body>
   <h1>Menu Principal</h1>
-  <div style="margin-top: 20px;">
-    <button onclick="startVocabulary()">Vocabulario</button>
-    <a href="index.html"><button style="background-color: #777;">Volver al Menú</button></a>
-  </div>
-
 <script>
 let vocabularyData = [];
 let currentWord = null;
@@ -64,7 +59,7 @@ function loadCSV(callback) {
   fetch('vocabulary.csv')
     .then(response => response.text())
     .then(data => {
-      const lines = data.split('\n').slice(0); // no saltamos cabecera, parece no tener
+      const lines = data.split('\n').slice(0);
       vocabularyData = lines.map(line => {
         const columns = line.split(';');
         return {
@@ -110,9 +105,9 @@ function checkAnswer() {
   const resultDiv = document.getElementById('result');
   let message = '';
   if (userAnswer === currentWord.word.toLowerCase()) {
-    message = `<span style="color: green; font-weight: bold;">\u2714 Correcto!</span>`;
+    message = `<span style="color: green; font-weight: bold;">✔ Correcto!</span>`;
   } else {
-    message = `<span style="color: red; font-weight: bold;">\u2716 Incorrecto. Era: <b>${currentWord.word}</b></span>`;
+    message = `<span style="color: red; font-weight: bold;">✖ Incorrecto. Era: <b>${currentWord.word}</b></span>`;
   }
   message += `<p><strong>Pronunciación:</strong> ${currentWord.pronunciation}</p>`;
   message += `<p><strong>Ejemplo:</strong> ${currentWord.example}</p>`;
@@ -121,6 +116,14 @@ function checkAnswer() {
   setTimeout(pickRandomWord, 4000);
 }
 </script>
+
+<!-- Botones principales -->
+<div style="margin-top: 20px;">
+  <button onclick="startVocabulary()">Vocabulario</button>
+  <a href="index.html"><button style="background-color: #777;">Volver al Menú</button></a>
+</div>
+
+<div id="game"></div>
 
 </body>
 </html>
