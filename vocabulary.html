@@ -51,7 +51,7 @@
 </head>
 <body>
   <h1>Menu Principal</h1>
-  <button onclick="startVocabulary()">Vocabulario</button>
+  <button onclick="startVocabulary()">Iniciar</button>
   <div id="game"></div>
 
 <script>
@@ -90,7 +90,7 @@ function pickRandomWord() {
     <p><strong>Traducción:</strong><br>${currentWord.translation}</p>
     <input type="text" id="answer" placeholder="Escribe la palabra en inglés" autofocus>
     <br>
-    <button onclick="checkAnswer()">Enviar</button>
+    <button onclick="checkAnswer()">Submit</button>
     <div id="result" style="margin-top:15px;"></div>
   `;
 }
