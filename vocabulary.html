@@ -50,7 +50,7 @@
   </style>
 </head>
 <body>
-  <h1>Menu Principal</h1>
+  <h1>Vocabulary Test</h1>
 <script>
 let vocabularyData = [];
 let currentWord = null;
@@ -109,8 +109,8 @@ function checkAnswer() {
   } else {
     message = `<span style="color: red; font-weight: bold;">✖ Incorrecto. Era: <b>${currentWord.word}</b></span>`;
   }
-  message += `<p><strong>Pronunciación:</strong> ${currentWord.pronunciation}</p>`;
-  message += `<p><strong>Ejemplo:</strong> ${currentWord.example}</p>`;
+  message += `<p><strong>Fonetic:</strong> ${currentWord.pronunciation}</p>`;
+  message += `<p><strong>Example:</strong> ${currentWord.example}</p>`;
   resultDiv.innerHTML = message;
 
   setTimeout(pickRandomWord, 4000);
@@ -119,7 +119,7 @@ function checkAnswer() {
 
 <!-- Botones principales -->
 <div style="margin-top: 20px;">
-  <button onclick="startVocabulary()">Vocabulario</button>
+  <button onclick="startVocabulary()">New/Start</button>
   <a href="index.html"><button style="background-color: #777;">Volver al Menú</button></a>
 </div>
 
