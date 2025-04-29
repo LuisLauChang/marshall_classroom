@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vocabulario App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f0f2f5;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 10px;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+    #game {
+      background: white;
+      padding: 20px;
+      margin-top: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    input[type="text"] {
+      padding: 10px;
+      width: 80%;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Menu Principal</h1>
+  <button onclick="startVocabulary()">Vocabulario</button>
+  <div id="game"></div>
+
+  <script>
+    const vocabularyData = [
+      { word: "apple", definition: "A round fruit with red or green skin." },
+      { word: "banana", definition: "A long curved fruit with a yellow skin." },
+      { word: "cat", definition: "A small domesticated carnivorous mammal." }
+    ];
+    
+    let currentWord = null;
+
+    function startVocabulary() {
+      const gameDiv = document.getElementById('game');
+      gameDiv.innerHTML = '';
+      pickRandomWord();
+    }
+
+    function pickRandomWord() {
+      const gameDiv = document.getElementById('game');
+      currentWord = vocabularyData[Math.floor(Math.random() * vocabularyData.length)];
+      gameDiv.innerHTML = `
+        <p><strong>Definition:</strong><br>${currentWord.definition}</p>
+        <input type="text" id="answer" placeholder="Type the word" autofocus>
+        <br>
+        <button onclick="checkAnswer()">Submit</button>
+        <div id="result" style="margin-top:15px;"></div>
+      `;
+    }
+
+    function checkAnswer() {
+      const userAnswer = document.getElementById('answer').value.trim().toLowerCase();
+      const resultDiv = document.getElementById('result');
+      if (userAnswer === currentWord.word.toLowerCase()) {
+        resultDiv.innerHTML = `<span style="color: green; font-weight: bold;">Correct! (${currentWord.word})</span>`;
+      } else {
+        resultDiv.innerHTML = `<span style="color: red; font-weight: bold;">Incorrect. The correct word was: ${currentWord.word}</span>`;
+      }
+      setTimeout(pickRandomWord, 2500);
+    }
+  </script>
+</body>
+</html>
