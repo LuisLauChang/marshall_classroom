@@ -50,25 +50,22 @@
   </style>
 </head>
 <body>
-  <h1>Vocabulario</h1>
-  <button onclick="startVocabulary()">Iniciar</button>
+  <h1>Menu Principal</h1>
+  <button onclick="startVocabulary()">Vocabulario</button>
   <div id="game"></div>
 
   <script>
+    const vocabularyData = [
+      { word: "apple", definition: "A round fruit with red or green skin." },
+      { word: "banana", definition: "A long curved fruit with a yellow skin." },
+      { word: "cat", definition: "A small domesticated carnivorous mammal." }
+    ];
+    
     let currentWord = null;
-    let vocabularyData = [];
-
-    async function loadVocabulary() {
-      const response = await fetch('vocabularyData.json');
-      vocabularyData = await response.json();
-    }
 
     function startVocabulary() {
       const gameDiv = document.getElementById('game');
       gameDiv.innerHTML = '';
-      if (vocabularyData.length === 0) {
-        await loadVocabulary();
-      }
       pickRandomWord();
     }
 
