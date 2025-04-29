@@ -64,7 +64,7 @@ function loadCSV(callback) {
     .then(data => {
       const lines = data.split('\n').slice(1); // salta la cabecera
       vocabularyData = lines.map(line => {
-        const columns = line.split(',');
+        const columns = line.split(';');
         return {
           word: columns[0].trim(),
           pronunciation: columns[2].trim(),
