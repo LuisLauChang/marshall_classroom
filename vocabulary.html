@@ -78,41 +78,29 @@ function startVocabulary() {
   const gameDiv = document.getElementById('game');
   currentWord = vocabularyData[Math.floor(Math.random() * vocabularyData.length)];
   gameDiv.innerHTML = `
-    <p><strong>Definition:</strong><br>${currentWord.definition}</p>
-    <input type="text" id="answer" placeholder="Type the word" autofocus>
-    <br>
-    <button onclick="checkAnswer()">Submit</button>
-    <div id="result" style="margin-top:15px;"></div>
-  `;
-
-  // Soporte para tecla Enter
-  const input = document.getElementById('answer');
-  input.addEventListener('keydown', function(event) {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      checkAnswer();
-    }
-  });
-}
-
-function pickRandomWord() {
-  const gameDiv = document.getElementById('game');
-  currentWord = vocabularyData[Math.floor(Math.random() * vocabularyData.length)];
-  gameDiv.innerHTML = `
     <p><strong>Traducción:</strong><br>${currentWord.translation}</p>
-    <input type="text" id="answer" placeholder="Escribe la palabra en inglés" autofocus>
+    <input type="text" id="answer" placeholder="Escribe la palabra en inglés">
     <br>
-    <button onclick="checkAnswer()">Submit</button>
+    <button id="submit-btn">Submit</button>
     <div id="result" style="margin-top:15px;"></div>
   `;
 
-  const input = document.getElementById('answer');
-  input.addEventListener('keydown', function(event) {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      checkAnswer();
+  setTimeout(() => {
+    const input = document.getElementById('answer');
+    if (input) input.focus();
+
+    input.addEventListener('keydown', function(event) {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        checkAnswer();
+      }
+    });
+
+    const submitButton = document.getElementById('submit-btn');
+    if (submitButton) {
+      submitButton.addEventListener('click', checkAnswer);
     }
-  });
+  }, 100);
 }
 
 function checkAnswer() {
@@ -128,13 +116,20 @@ function checkAnswer() {
   message += `<p><strong>Ejemplo:</strong> ${currentWord.example}</p>`;
   resultDiv.innerHTML = message;
 
-  setTimeout(pickRandomWord, 4000);
+  setTimeout(startVocabulary, 4000);
 }
+
+// Asegurar que todo esté cargado antes de usar botones
+window.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('start-btn').addEventListener('click', function() {
+    loadCSV(startVocabulary);
+  });
+});
 </script>
 
 <!-- Botones principales -->
 <div style="margin-top: 20px;">
-  <button onclick="startVocabulary()">Vocabulario</button>
+  <button id="start-btn">Vocabulario</button>
   <a href="index.html"><button style="background-color: #777;">Volver al Menú</button></a>
 </div>
 
