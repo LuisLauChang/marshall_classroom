@@ -66,6 +66,9 @@
     function startVocabulary() {
       const gameDiv = document.getElementById('game');
       gameDiv.innerHTML = '';
+      if (vocabularyData.length === 0) {
+        await loadVocabulary();
+      }
       pickRandomWord();
     }
 
