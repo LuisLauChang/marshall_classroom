@@ -69,8 +69,8 @@ function loadCSV(callback) {
           pronunciation: columns[2]?.trim(),
           example: columns[3]?.trim(),
           translation: columns[4]?.trim(),
-          file: columns[5]?.trim(),
-          section: columns[6]?.trim()
+          file: columns[5]?.trim() || '-',
+          section: columns[6]?.trim() || '-'
         };
       }).filter(item => item.word && item.translation);
       callback();
