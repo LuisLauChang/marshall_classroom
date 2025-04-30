@@ -100,16 +100,27 @@ function pickRandomWord() {
   const gameDiv = document.getElementById('game');
   currentWord = vocabularyData[Math.floor(Math.random() * vocabularyData.length)];
   const fullType = partOfSpeechMap[currentWord.type] || currentWord.type;
+  const wordCount = currentWord.word.split(/\s+/).filter(Boolean).length;
   
-  gameDiv.innerHTML = `
+  let infoHTML = `
     <p><strong>Spanish:</strong> ${currentWord.translation}</p>
-    <p><strong>Chapter:</strong> ${currentWord.section}(${currentWord.file})</p>
-    <p><strong>Part of Speech:</strong> ${fullType}</p>
+    <p><strong>File:</strong> ${currentWord.file}/${currentWord.section}</p>
+  `;
+
+  if (fullType && fullType !== '-') {
+    infoHTML += `<p><strong>Part of Speech:</strong> ${fullType}</p>`;
+  }
+
+  infoHTML += `<p><strong>Words:</strong> ${wordCount}</p>`;
+
+  infoHTML += `
     <input type="text" id="answer" placeholder="Escribe la palabra en inglés" autofocus>
     <br>
     <button onclick="checkAnswer()">Enviar</button>
     <div id="result" style="margin-top:15px;"></div>
   `;
+
+  gameDiv.innerHTML = infoHTML;
 
   const input = document.getElementById('answer');
   input.addEventListener('keydown', function(event) {
