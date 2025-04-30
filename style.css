@@ -35,7 +35,7 @@ button {
 }
 input[type="text"] {
   width: 100%;
-  max-width: 450px; /* Limita el ancho en pantallas grandes */
+  max-width: 480px; /* Limita el ancho en pantallas grandes */
   padding: 0.7em;
   font-size: 1em;
   margin-top: 1em;
