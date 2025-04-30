@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fonetic Test</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Fonetic Test</h1>
+  <div style="margin-top: 20px;">
+    <button onclick="startFonetic()">New/Start</button>
+    <a href="index.html"><button style="background-color: #777;">Return</button></a>
+  </div>
+  <div id="game"></div>
+
+<script>
+let foneticData = [];
+let currentEntry = null;
+
+function loadFoneticCSV(callback) {
+  fetch('fonetic.csv')
+    .then(response => response.text())
+    .then(data => {
+      const lines = data.split('\n');
+      foneticData = lines.map(line => {
+        const columns = line.split(';');
+        return {
+          phonetic: columns[0]?.trim(),
+          word: columns[1]?.trim()
+        };
+      }).filter(item => item.phonetic && item.word);
+      callback();
+    })
+    .catch(error => console.error('Error loading fonetic CSV:', error));
+}
+
+function startFonetic() {
+  const gameDiv = document.getElementById('game');
+  gameDiv.innerHTML = '';
+  loadFoneticCSV(pickRandomFonetic);
+}
+
+function pickRandomFonetic() {
+  const gameDiv = document.getElementById('game');
+  currentEntry = foneticData[Math.floor(Math.random() * foneticData.length)];
+
+  const html = `
+    <p><strong>Phonetic:</strong> ${currentEntry.phonetic}</p>
+    <input type="text" id="answer" placeholder="Type the correct word" autofocus>
+    <br>
+    <button onclick="checkAnswer()">Submit</button>
+    <div id="result" style="margin-top:15px;"></div>
+  `;
+  gameDiv.innerHTML = html;
+
+  const input = document.getElementById('answer');
+  input.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      checkAnswer();
+    }
+  });
+}
+
+function checkAnswer() {
+  const userAnswer = document.getElementById('answer').value.trim().toLowerCase();
+  const resultDiv = document.getElementById('result');
+  let message = '';
+  if (userAnswer === currentEntry.word.toLowerCase()) {
+    message = `<span style="color: green; font-weight: bold;">✔ Correct!</span>`;
+  } else {
+    message = `<span style="color: red; font-weight: bold;">✖ Incorrect. The correct word was: <b>${currentEntry.word}</b></span>`;
+  }
+  resultDiv.innerHTML = message;
+
+  setTimeout(pickRandomFonetic, 5000);
+}
+</script>
+</body>
+</html>
