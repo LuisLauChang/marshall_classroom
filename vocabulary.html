@@ -104,7 +104,7 @@ function pickRandomWord() {
   
   let infoHTML = `
     <p><strong>Spanish:</strong> ${currentWord.translation}</p>
-    <p><strong>File:</strong> ${currentWord.file}/${currentWord.section}</p>
+    <p><strong>File:</strong> ${currentWord.section} (${currentWord.file})</p>
   `;
 
   if (fullType && fullType !== '-') {
