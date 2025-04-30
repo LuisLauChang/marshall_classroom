@@ -8,9 +8,8 @@
 <body>
 
   <h1>Reorder the Sentence</h1>
-  <p>Upload your <strong>reorder.csv</strong> file (one sentence per line):</p>
-  <input type="file" id="csvFile" accept=".csv">
-  
+  <p>Solve the sentence below by reordering the words:</p>
+
   <div class="card" id="exercise" style="display:none;">
     <p><strong>Reorder this sentence:</strong></p>
     <p id="shuffled"></p>
@@ -25,20 +24,25 @@
     let currentIndex = 0;
     let currentOriginal = "";
 
-    document.getElementById("csvFile").addEventListener("change", function(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const lines = e.target.result.split(/\r?\n/).filter(line => line.trim() !== "");
-        sentences = lines;
-        currentIndex = 0;
-        document.getElementById("exercise").style.display = "block";
-        loadSentence();
-      };
-      reader.readAsText(file);
-    });
+    // Leer reorder.csv automáticamente
+    fetch("reorder.csv")
+      .then(response => {
+        if (!response.ok) throw new Error("File not found");
+        return response.text();
+      })
+      .then(data => {
+        sentences = data.split(/\r?\n/).filter(line => line.trim() !== "");
+        if (sentences.length > 0) {
+          document.getElementById("exercise").style.display = "block";
+          loadSentence();
+        } else {
+          alert("The file is empty.");
+        }
+      })
+      .catch(error => {
+        alert("Could not load reorder.csv. Make sure it is in the same folder and accessed through a web server.");
+        console.error(error);
+      });
 
     function shuffleWords(sentence) {
       const words = sentence.trim().split(/\s+/);
@@ -87,3 +91,4 @@
 
 </body>
 </html>
+
