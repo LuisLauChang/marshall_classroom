@@ -56,6 +56,18 @@
 let vocabularyData = [];
 let currentWord = null;
 
+const partOfSpeechMap = {
+  "adj": "adjective",
+  "adv": "adverb",
+  "det": "determiner",
+  "n": "noun",
+  "pl n": "plural noun",
+  "phr v": "phrasal verb",
+  "prep": "preposition",
+  "pron": "pronoun",
+  "v": "verb"
+};
+
 function loadCSV(callback) {
   fetch('vocabulary.csv')
     .then(response => response.text())
@@ -87,10 +99,12 @@ function startVocabulary() {
 function pickRandomWord() {
   const gameDiv = document.getElementById('game');
   currentWord = vocabularyData[Math.floor(Math.random() * vocabularyData.length)];
+  const fullType = partOfSpeechMap[currentWord.type] || currentWord.type;
+  
   gameDiv.innerHTML = `
     <p><strong>Spanish:</strong> ${currentWord.translation}</p>
-    <p><strong>File:</strong> ${currentWord.file}/${currentWord.section}</p>
-    <p><strong>Type:</strong> ${currentWord.type}</p>
+    <p><strong>Chapter:</strong> ${currentWord.file} / ${currentWord.section}</p>
+    <p><strong>Part of Speech:</strong> ${fullType}</p>
     <input type="text" id="answer" placeholder="Escribe la palabra en inglés" autofocus>
     <br>
     <button onclick="checkAnswer()">Enviar</button>
