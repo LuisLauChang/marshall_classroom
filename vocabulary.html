@@ -103,7 +103,7 @@ function pickRandomWord() {
   
   gameDiv.innerHTML = `
     <p><strong>Spanish:</strong> ${currentWord.translation}</p>
-    <p><strong>Chapter:</strong> ${currentWord.file} / ${currentWord.section}</p>
+    <p><strong>Chapter:</strong> ${currentWord.section}(${currentWord.file})</p>
     <p><strong>Part of Speech:</strong> ${fullType}</p>
     <input type="text" id="answer" placeholder="Escribe la palabra en inglés" autofocus>
     <br>
