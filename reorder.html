@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Reorder the Sentence</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1>Reorder the Sentence</h1>
+  <p>Upload your <strong>reorder.csv</strong> file (one sentence per line):</p>
+  <input type="file" id="csvFile" accept=".csv">
+  
+  <div class="card" id="exercise" style="display:none;">
+    <p><strong>Reorder this sentence:</strong></p>
+    <p id="shuffled"></p>
+    <input type="text" id="userInput" placeholder="Type the correct sentence here">
+    <button onclick="checkAnswer()">Check</button>
+    <div class="feedback" id="feedback"></div>
+    <button onclick="nextSentence()" id="nextBtn" style="display:none;">Next</button>
+  </div>
+
+  <script>
+    let sentences = [];
+    let currentIndex = 0;
+    let currentOriginal = "";
+
+    document.getElementById("csvFile").addEventListener("change", function(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const lines = e.target.result.split(/\r?\n/).filter(line => line.trim() !== "");
+        sentences = lines;
+        currentIndex = 0;
+        document.getElementById("exercise").style.display = "block";
+        loadSentence();
+      };
+      reader.readAsText(file);
+    });
+
+    function shuffleWords(sentence) {
+      const words = sentence.trim().split(/\s+/);
+      for (let i = words.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [words[i], words[j]] = [words[j], words[i]];
+      }
+      return words.join(" ");
+    }
+
+    function loadSentence() {
+      if (currentIndex >= sentences.length) {
+        document.getElementById("shuffled").innerText = "All sentences completed!";
+        document.getElementById("userInput").style.display = "none";
+        document.getElementById("nextBtn").style.display = "none";
+        return;
+      }
+
+      currentOriginal = sentences[currentIndex].trim();
+      const shuffled = shuffleWords(currentOriginal);
+      document.getElementById("shuffled").innerText = shuffled;
+      document.getElementById("userInput").value = "";
+      document.getElementById("feedback").innerText = "";
+      document.getElementById("nextBtn").style.display = "none";
+    }
+
+    function checkAnswer() {
+      const userAnswer = document.getElementById("userInput").value.trim();
+      const normalizedOriginal = currentOriginal.replace(/\s+/g, " ");
+      const normalizedUser = userAnswer.replace(/\s+/g, " ");
+
+      if (normalizedUser.toLowerCase() === normalizedOriginal.toLowerCase()) {
+        document.getElementById("feedback").innerText = "✅ Correct!";
+      } else {
+        document.getElementById("feedback").innerText = `❌ Incorrect. Correct answer: "${currentOriginal}"`;
+      }
+
+      document.getElementById("nextBtn").style.display = "inline-block";
+    }
+
+    function nextSentence() {
+      currentIndex++;
+      loadSentence();
+    }
+  </script>
+
+</body>
+</html>
