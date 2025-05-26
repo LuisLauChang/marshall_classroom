@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Writing Textbox</title>
+<style>
+body{font-family:Arial, sans-serif; background:#ffffff; padding:20px;}
+#textBox{width:100%; height:200px; font-size:1rem; padding:10px; box-sizing:border-box;}
+#controls{margin-top:10px; display:flex; align-items:center; gap:1rem;}
+#wordCount, #timerDisplay{font-weight:bold;}
+.red{color:#c20000;}
+.green{color:#006400;}
+.yellow{color:#DAA520;}
+button{padding:0.5rem 1rem; font-size:1rem; cursor:pointer;}
+</style>
+</head>
+<body>
+<textarea id="textBox" placeholder="Write your text here... (max 190 words)" disabled></textarea>
+<div id="controls">
+  <button id="timerButton">Start</button>
+  <span id="wordCount" class="red">0 / 190 words</span>
+  <span id="timerDisplay" class="green" style="display:none;">0.0 min</span>
+</div>
+
+<script>
+const textBox = document.getElementById('textBox');
+const wordCountSpan = document.getElementById('wordCount');
+const timerButton = document.getElementById('timerButton');
+const timerDisplay = document.getElementById('timerDisplay');
+
+let startTime = null;
+let counting = false;
+
+function countWords(str){
+  return str.trim().split(/\s+/).filter(Boolean).length;
+}
+
+function updateWordCount(){
+  const words = countWords(textBox.value);
+  if(words > 190){
+     // trim to 190 words
+     const trimmed = textBox.value.trim().split(/\s+/).slice(0,190).join(' ');
+     textBox.value = trimmed;
+  }
+  const currentWords = countWords(textBox.value);
+  wordCountSpan.textContent = `${currentWords} / 190 words`;
+  if(currentWords < 140){
+     wordCountSpan.className = 'red';
+  }else{
+     wordCountSpan.className = 'green';
+  }
+}
+
+function updateTimerColor(minutes){
+  if(minutes < 20){
+     timerDisplay.className = 'green';
+  }else if(minutes < 25){
+     timerDisplay.className = 'yellow';
+  }else{
+     timerDisplay.className = 'red';
+  }
+}
+
+textBox.addEventListener('input', ()=>{
+  if(counting) updateWordCount();
+});
+
+timerButton.addEventListener('click', ()=>{
+  if(!counting){
+     // Start
+     counting = true;
+     startTime = Date.now();
+     textBox.disabled = false;
+     timerButton.textContent = 'Stop';
+     timerDisplay.style.display = 'none';
+     updateWordCount();
+  }else{
+     // Stop
+     counting = false;
+     const elapsedMs = Date.now() - startTime;
+     const minutes = elapsedMs / 60000;
+     timerDisplay.textContent = `${minutes.toFixed(1)} min`;
+     updateTimerColor(minutes);
+     timerDisplay.style.display = 'inline';
+     timerButton.textContent = 'Start';
+     textBox.disabled = true;
+  }
+});
+</script>
+</body>
+</html>
